@@ -1,20 +1,37 @@
-# Compiler files
+# Foundry
 cache/
 out/
-
-# Commonly ignored directories
-.logs/
-.ignore/
-
-# Ignores development broadcast logs
+broadcast/
 !/broadcast
 /broadcast/*/31337/
 /broadcast/**/dry-run/
 
-# Docs
-docs/
+# Logs
+.logs/
+*.log
 
-# Dotenv file
+# Environment and secrets
 .env
 .env.*
 !.env.example
+*.key
+*.pem
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# JavaScript
+node_modules/
+
+# Build artifacts
+artifacts/
+coverage/
+dist/
+build/
+
+# Local ignore files
+.ignore/
