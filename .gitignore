@@ -35,3 +35,11 @@ build/
 
 # Local ignore files
 .ignore/
+
+# Sentinel research datasets (keep locally; do not push large data files)
+data/real/*.csv
+data/real/*.json
+data/real/*.jsonl
+data/real/*:Zone.Identifier
+data/processed/*.csv
+data/processed/*.json
