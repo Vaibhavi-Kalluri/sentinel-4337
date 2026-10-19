@@ -44,3 +44,20 @@ data/real/*:Zone.Identifier
 data/processed/*.csv
 data/processed/*.json
 reports/*.csv
+
+# Synthetic Sentinel experiment outputs (generated locally)
+data/synthetic/*.csv
+data/synthetic/*.json
+
+# Generated synthetic datasets and split files
+data/synthetic/*.csv
+data/synthetic/*.json
+data/synthetic/splits/*.csv
+data/synthetic/splits/*.json
+
+# Locally trained models and generated experiment reports
+models/*
+reports/*.json
+reports/*.joblib
+reports/*.png
+reports/*.pdf
