@@ -43,3 +43,4 @@ data/real/*.jsonl
 data/real/*:Zone.Identifier
 data/processed/*.csv
 data/processed/*.json
+reports/*.csv
