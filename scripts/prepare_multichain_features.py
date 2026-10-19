@@ -19,6 +19,7 @@ NUMERIC_FEATURES = [
     "errored_trace_count",
     "actual_gas_used",
     "actual_gas_cost_eth",
+    "delegatecall_count",
 ]
 
 REQUIRED_COLUMNS = [
