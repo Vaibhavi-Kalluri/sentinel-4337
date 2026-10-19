@@ -1,0 +1,44 @@
+{
+  "input_file": "data/real/optimism_userop_features_20250409.csv",
+  "output_file": "data/processed/optimism_userop_features_20250409_processed.csv",
+  "rows": 2000,
+  "unique_operation_hashes": 2000,
+  "chain_values": [
+    "op"
+  ],
+  "date_scope": "2025-04-09",
+  "source_label_available": false,
+  "success_is_maliciousness_label": false,
+  "constant_feature_excluded": {
+    "delegatecall_count": "Constant zero in this sample; reconsider with broader data."
+  },
+  "candidate_model_features": [
+    "trace_count",
+    "unique_destinations",
+    "approve_trace_count",
+    "transfer_from_trace_count",
+    "value_transfer_trace_count",
+    "errored_trace_count",
+    "actual_gas_used",
+    "actual_gas_cost_eth",
+    "has_approval",
+    "has_transfer_from",
+    "has_value_transfer",
+    "has_trace_errors",
+    "has_paymaster",
+    "log1p_trace_count",
+    "log1p_unique_destinations",
+    "log1p_approve_trace_count",
+    "log1p_transfer_from_trace_count",
+    "log1p_value_transfer_trace_count",
+    "log1p_errored_trace_count",
+    "log1p_actual_gas_used",
+    "log1p_actual_gas_cost_eth"
+  ],
+  "notes": [
+    "No maliciousness labels are inferred.",
+    "Raw input is not modified.",
+    "Log-transformed columns supplement rather than replace raw counts.",
+    "Candidate features require further validation before model training."
+  ]
+}
