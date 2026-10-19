@@ -51,6 +51,22 @@ class TestMultichainPipeline(unittest.TestCase):
         self.assertNotIn("delegatecall_count", candidates)
         self.assertNotIn("log1p_delegatecall_count", candidates)
 
+    def test_unvalidated_gas_features_excluded_from_model(self):
+        candidates = set(self.manifest["candidate_model_features"])
+
+        excluded_gas_features = {
+            "actual_gas_used",
+            "actual_gas_cost_eth",
+            "log1p_actual_gas_used",
+            "log1p_actual_gas_cost_eth",
+        }
+
+        self.assertTrue(excluded_gas_features.isdisjoint(candidates))
+
+        # Keep the original measurements available for later investigation.
+        for column in ("actual_gas_used", "actual_gas_cost_eth"):
+            self.assertIn(column, self.df.columns)
+
     def test_no_maliciousness_label_claim(self):
         self.assertFalse(
             self.manifest["source_maliciousness_labels_available"]

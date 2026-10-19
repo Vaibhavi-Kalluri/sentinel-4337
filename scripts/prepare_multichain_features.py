@@ -94,15 +94,27 @@ def main():
     for col in SKEWED_FEATURES:
         df[f"log1p_{col}"] = np.log1p(df[col].astype(float))
 
-    # Exclude features that have no variation in this dataset.
+    # Gas fields remain in the processed data for auditing, but are
+    # excluded from the initial model until cross-chain semantics are verified.
+    GAS_FEATURES_EXCLUDED_PENDING_VALIDATION = {
+        "actual_gas_used",
+        "actual_gas_cost_eth",
+        "log1p_actual_gas_used",
+        "log1p_actual_gas_cost_eth",
+    }
+
+    # Exclude unvalidated gas features and features with no variation.
     candidate_features = [
-        *NUMERIC_FEATURES,
-        "has_approval",
-        "has_transfer_from",
-        "has_value_transfer",
-        "has_trace_errors",
-        "has_paymaster",
-        *[f"log1p_{col}" for col in SKEWED_FEATURES],
+        col for col in [
+            *NUMERIC_FEATURES,
+            "has_approval",
+            "has_transfer_from",
+            "has_value_transfer",
+            "has_trace_errors",
+            "has_paymaster",
+            *[f"log1p_{col}" for col in SKEWED_FEATURES],
+        ]
+        if col not in GAS_FEATURES_EXCLUDED_PENDING_VALIDATION
     ]
 
     constant_features = [
@@ -144,6 +156,8 @@ def main():
             "Execution success indicates outcome, not maliciousness.",
             "Raw input and the original Optimism processed output are not modified.",
             "Log-transformed features supplement rather than replace raw counts.",
+            "Gas usage and gas cost fields are retained in the processed data but excluded from candidate model features pending cross-chain validation.",
+            "Gas cost is derived from the same event and is not independent confirmation of gas usage.",
             "Sampling coverage should be checked before claiming representativeness.",
             "These features alone do not establish that an operation is malicious.",
         ],
