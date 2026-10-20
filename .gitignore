@@ -61,3 +61,20 @@ reports/*.json
 reports/*.joblib
 reports/*.png
 reports/*.pdf
+data/experimental/real_background/*.csv
+data/experimental/real_background/*.json
+data/experimental/real_background/splits/*.csv
+data/experimental/real_background/splits/*.json
+
+# Nested E1 synthetic experiment splits
+data/synthetic/e1_splits/*.csv
+data/synthetic/e1_splits/*.json
+
+# Local backup of the experimental benchmark generator
+scripts/generate_real_background_benchmark.py.bak
+
+# Generated experiment outputs; keep the human-readable submission summary
+reports/**/*.csv
+reports/**/*.json
+reports/**/*.joblib
+!reports/real_background_benchmark/SUBMISSION_RESULTS.md
