@@ -5,7 +5,7 @@ pragma solidity ^0.8.28;
 import {Test} from "forge-std/Test.sol";
 import {EntryPoint} from "account-abstraction/core/EntryPoint.sol";
 import {PackedUserOperation} from "account-abstraction/interfaces/PackedUserOperation.sol";
-
+import {BaseAccount} from "account-abstraction/core/BaseAccount.sol";
 import {SentinelTarget} from "../src/SentinelTarget.sol";
 import {SentinelPolicy} from "../src/SentinelPolicy.sol";
 import {SentinelAccount} from "../src/SentinelAccount.sol";
@@ -131,4 +131,77 @@ contract SentinelERC4337IntegrationTest is Test {
         assertGt(sender.code.length, 0);
         assertEq(forbiddenTarget.value(), 0);
     }
+function testBlockedSelectorDoesNotExecuteThroughEntryPoint() public {
+    uint256 salt = 3;
+    address sender = factory.getAddress(owner, salt);
+
+    entryPoint.depositTo{value: 1 ether}(sender);
+
+    // Allow the target, but block setValue(uint256).
+    policy.setSelectorBlocked(
+        SentinelTarget.setValue.selector,
+        true
+    );
+
+    PackedUserOperation memory userOp = _buildUserOp(
+        salt,
+        address(target),
+        abi.encodeCall(SentinelTarget.setValue, (99))
+    );
+
+    _submit(userOp);
+
+    assertGt(sender.code.length, 0);
+    assertEq(target.value(), 0);
+}
+
+function testBatchValidatesAllCallsBeforeExecuting() public {
+    uint256 salt = 4;
+    address sender = factory.getAddress(owner, salt);
+
+    entryPoint.depositTo{value: 1 ether}(sender);
+
+    SentinelTarget forbiddenTarget = new SentinelTarget();
+
+    // First call is allowed; second call targets a forbidden target.
+    BaseAccount.Call[] memory calls =
+    new BaseAccount.Call[](2);
+    calls[0] = BaseAccount.Call({
+        target: address(target),
+        value: 0,
+        data: abi.encodeCall(SentinelTarget.setValue, (77))
+    });
+
+    calls[1] = BaseAccount.Call({
+        target: address(forbiddenTarget),
+        value: 0,
+        data: abi.encodeCall(SentinelTarget.setValue, (99))
+    });
+
+    bytes memory callData = abi.encodeWithSignature(
+        "executeBatch((address,uint256,bytes)[])",
+        calls
+    );
+
+    PackedUserOperation memory userOp = _buildUserOp(
+        salt,
+        address(target),
+        abi.encodeCall(SentinelTarget.setValue, (77))
+    );
+
+    // Replace the single-call calldata with executeBatch calldata.
+    userOp.callData = callData;
+
+    // Re-sign because changing callData changes the UserOperation hash.
+    bytes32 userOpHash = entryPoint.getUserOpHash(userOp);
+    (uint8 v, bytes32 r, bytes32 s) =
+        vm.sign(ownerPrivateKey, userOpHash);
+    userOp.signature = abi.encodePacked(r, s, v);
+
+    _submit(userOp);
+
+    // The allowed first call must not execute if the second is forbidden.
+    assertEq(target.value(), 0);
+    assertEq(forbiddenTarget.value(), 0);
+}
 }
