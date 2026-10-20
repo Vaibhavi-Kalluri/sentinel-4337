@@ -1,0 +1,14 @@
+(()=>{
+const panel=document.createElement('article');panel.className='prototype-panel';panel.innerHTML=`<h3>4. Unified security decision <span class="demo-tag">WORKING LOCAL PROTOTYPE</span></h3><p>Runs your actual saved Random Forest and combines it with an explicit demonstration policy. A high-risk approved operation enters a <b>simulated confirmation gate</b>, not a cryptographic ZK gate.</p><button id="prototypeRun" class="primary">Evaluate unified prototype →</button><div id="prototypeResult" class="muted">Uses the wallet recipient and advanced trace-feature inputs above.</div>`;
+const sim=document.getElementById('simulation');if(!sim)return;sim.appendChild(panel);
+const $=id=>document.getElementById(id);const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+$('prototypeRun').onclick=async()=>{
+const out=$('prototypeResult');out.textContent='Evaluating…';const features={};
+for(const key of ['trace_count','unique_destinations','approve_trace_count','transfer_from_trace_count','value_transfer_trace_count','errored_trace_count']){const n=Number($('sig_'+key)?.value);if(!Number.isInteger(n)||n<0){out.textContent='All trace counts must be nonnegative integers.';return;}features[key]=n;}
+for(const [flag,count] of Object.entries({has_approval:'approve_trace_count',has_transfer_from:'transfer_from_trace_count',has_value_transfer:'value_transfer_trace_count',has_trace_errors:'errored_trace_count'}))features[flag]=features[count]>0;
+features.has_paymaster=!!$('walletPaymaster')?.checked;
+try{const r=await fetch('/api/prototype/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({approved_target:$('walletRecipient')?.value==='approved',features})});const d=await r.json();if(!r.ok)throw Error(d.error||'Check failed');const z=d.decision;out.innerHTML=`<h3>${esc(z.tier)} · ${esc(z.decision)}</h3><p>${esc(z.reason)}</p><p><b>Actual ML score:</b> ${esc((d.ml.risk_score*100).toFixed(2))}/100 · <b>Validation review threshold:</b> ${esc((d.thresholds.review*100).toFixed(2))}/100 · <b>High-tier demo threshold:</b> 80/100</p><p><b>Original evaluator:</b> ${esc(d.ml.recommendation)} (0.5 threshold; unchanged)</p><p><b>Execution:</b> None — this is a local decision preview.</p>${z.gate_required?'<button id="demoConfirm" class="primary">Complete simulated confirmation</button><p id="gateState">Pending demo confirmation. No cryptographic proof generated.</p>':''}<details><summary>Model and decision JSON</summary><pre>${esc(JSON.stringify(d,null,2))}</pre></details>`;
+if(z.gate_required)$('demoConfirm').onclick=()=>{$('gateState').textContent='Demo confirmation accepted. This is NOT a ZK proof and did NOT authorize an on-chain transaction.';$('demoConfirm').disabled=true;};
+}catch(e){out.textContent='Unable to evaluate: '+e.message;}
+};
+})();

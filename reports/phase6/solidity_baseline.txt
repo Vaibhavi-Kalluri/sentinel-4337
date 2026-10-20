@@ -1,0 +1,33 @@
+No files changed, compilation skipped
+
+Ran 4 tests for test/SentinelPolicy.t.sol:SentinelPolicyTest
+[PASS] testAllowsApprovedTarget() (gas: 67699)
+[PASS] testRejectsBlockedSelector() (gas: 116531)
+[PASS] testRejectsShortCalldata() (gas: 65053)
+[PASS] testRejectsUnapprovedTarget() (gas: 16455)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 13.40ms (3.68ms CPU time)
+
+Ran 4 tests for test/SentinelAccount.t.sol:SentinelAccountTest
+[PASS] testAllowedCallExecutes() (gas: 79671)
+[PASS] testBatchRejectsBeforeAnyCallExecutes() (gas: 110193)
+[PASS] testBlockedSelectorIsRejected() (gas: 112464)
+[PASS] testUnapprovedTargetIsRejected() (gas: 51071)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 16.90ms (5.84ms CPU time)
+
+Ran 4 tests for test/SentinelTarget.t.sol:SentinelTargetTest
+[PASS] testCannotWithdrawMoreThanBalance() (gas: 88513)
+[PASS] testDeposit() (gas: 70968)
+[PASS] testSetValue() (gas: 54368)
+[PASS] testWithdraw() (gas: 106413)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 17.19ms (1.27ms CPU time)
+
+Ran 1 test for test/ERC4337Integration.t.sol:ERC4337IntegrationTest
+[PASS] testSignedUserOperationExecutesThroughEntryPoint() (gas: 444380)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 24.47ms (7.84ms CPU time)
+
+Ran 2 tests for test/SentinelERC4337Integration.t.sol:SentinelERC4337IntegrationTest
+[PASS] testAllowedOperationExecutesThroughEntryPoint() (gas: 470456)
+[PASS] testForbiddenTargetDoesNotExecuteThroughEntryPoint() (gas: 447338)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 24.71ms (15.90ms CPU time)
+
+Ran 5 test suites in 85.37ms (96.67ms CPU time): 15 tests passed, 0 failed, 0 skipped (15 total tests)

@@ -1,0 +1,15 @@
+{
+  "sender": "0x1111111111111111111111111111111111111111",
+  "chain": "base",
+  "trace_count": 6,
+  "unique_destinations": 3,
+  "approve_trace_count": 0,
+  "transfer_from_trace_count": 0,
+  "value_transfer_trace_count": 0,
+  "errored_trace_count": 0,
+  "has_approval": false,
+  "has_transfer_from": false,
+  "has_value_transfer": false,
+  "has_trace_errors": false,
+  "has_paymaster": false
+}

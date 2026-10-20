@@ -1,0 +1,11 @@
+test_approval_selector_adds_risk (test_evaluate_operation.TestEvaluateOperation.test_approval_selector_adds_risk) ... ok
+test_approved_normal_operation (test_evaluate_operation.TestEvaluateOperation.test_approved_normal_operation) ... ok
+test_missing_required_field_is_rejected (test_evaluate_operation.TestEvaluateOperation.test_missing_required_field_is_rejected) ... ok
+test_negative_value_is_rejected (test_evaluate_operation.TestEvaluateOperation.test_negative_value_is_rejected) ... ok
+test_new_unapproved_target_is_flagged (test_evaluate_operation.TestEvaluateOperation.test_new_unapproved_target_is_flagged) ... ok
+test_unapproved_target_is_flagged (test_evaluate_operation.TestEvaluateOperation.test_unapproved_target_is_flagged) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.000s
+
+OK

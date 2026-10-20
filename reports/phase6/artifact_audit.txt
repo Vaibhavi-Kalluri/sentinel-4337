@@ -1,0 +1,107 @@
+models/sentinel_real_background_injected_rf.joblib: FOUND
+  bytes=53011001
+data/real/multichain_userop_features_20250401_20250414.csv: FOUND
+  bytes=29506339
+data/processed/multichain_userop_features_20250401_20250414_processed.csv: FOUND
+  bytes=34337997
+data/experimental/real_background/manifest.json: FOUND
+  bytes=1454
+data/experimental/real_background/splits/split_manifest.json: FOUND
+  bytes=1210
+Model type: RandomForestClassifier
+Feature count: 17
+Feature names: ['trace_count', 'unique_destinations', 'approve_trace_count', 'transfer_from_trace_count', 'value_transfer_trace_count', 'errored_trace_count', 'has_approval', 'has_transfer_from', 'has_value_transfer', 'has_trace_errors', 'has_paymaster', 'log1p_trace_count', 'log1p_unique_destinations', 'log1p_approve_trace_count', 'log1p_transfer_from_trace_count', 'log1p_value_transfer_trace_count', 'log1p_errored_trace_count']
+
+Manifest: data/experimental/real_background/manifest.json
+{
+  "seed": 4337,
+  "source_file": "data/processed/multichain_userop_features_20250401_20250414_processed.csv",
+  "source_rows": 42000,
+  "benchmark_rows": 84000,
+  "unique_source_ids": 42000,
+  "labels": {
+    "0": "unmodified real-background operation",
+    "1": "controlled synthetic feature perturbation"
+  },
+  "perturbation_counts": {
+    "destination_perturbation": 8476,
+    "multi_call_perturbation": 8460,
+    "combined_perturbation": 8425,
+    "transfer_perturbation": 8394,
+    "approval_perturbation": 8245
+  },
+  "perturbation_design": {
+    "approval_perturbation": "Add 1-3 to approve_trace_count",
+    "transfer_perturbation": "Add 1-3 to transfer_from_trace_count",
+    "destination_perturbation": "Add 1-3 to unique_destinations",
+    "multi_call_perturbation": "Add 1-3 to trace_count",
+    "combined_perturbation": "Add 1-3 to approval count, value-transfer count, and trace count"
+  },
+  "important_limitations": [
+    "Positive labels mean synthetic feature perturbation, not verified maliciousness.",
+    "This is a feature-space benchmark, not reconstructed UserOperations.",
+    "Raw destination_addresses and method_selectors are not rewritten.",
+    "Do not use raw identifiers, metadata, or source_id as model features.",
+    "Execution success is not a maliciousness label.",
+    "The original real-background operations are not confirmed benign.",
+    "Results measure detection of these injected perturbations only."
+  ]
+}
+
+Manifest: data/experimental/real_background/splits/split_manifest.json
+{
+  "seed": 4337,
+  "strategy": "60/20/20 source-grouped split, stratified by chain",
+  "pair_leakage": false,
+  "splits": {
+    "train": {
+      "rows": 50400,
+      "source_ids": 25200,
+      "labels": {
+        "0": 25200,
+        "1": 25200
+      },
+      "chains": {
+        "base": 4200,
+        "op": 4200,
+        "polynomial": 4200,
+        "soneium": 4200,
+        "unichain": 4200,
+        "worldchain": 4200
+      }
+    },
+    "validation": {
+      "rows": 16800,
+      "source_ids": 8400,
+      "labels": {
+        "0": 8400,
+        "1": 8400
+      },
+      "chains": {
+        "base": 1400,
+        "op": 1400,
+        "polynomial": 1400,
+        "soneium": 1400,
+        "unichain": 1400,
+        "worldchain": 1400
+      }
+    },
+    "test": {
+      "rows": 16800,
+      "source_ids": 8400,
+      "labels": {
+        "0": 8400,
+        "1": 8400
+      },
+      "chains": {
+        "base": 1400,
+        "op": 1400,
+        "polynomial": 1400,
+        "soneium": 1400,
+        "unichain": 1400,
+        "worldchain": 1400
+      }
+    }
+  },
+  "limitation": "Label 1 indicates a synthetic feature perturbation, not verified maliciousness. The task evaluates detectability of injected changes."
+}

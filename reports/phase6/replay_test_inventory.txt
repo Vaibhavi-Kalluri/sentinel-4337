@@ -1,0 +1,9 @@
+test/SentinelERC4337Integration.t.sol:94:    function testAllowedOperationExecutesThroughEntryPoint() public {
+test/SentinelERC4337Integration.t.sol:114:    function testForbiddenTargetDoesNotExecuteThroughEntryPoint() public {
+test/SentinelTarget.t.sol:45:        vm.expectRevert("Insufficient balance");
+test/SentinelAccount.t.sol:56:        vm.expectRevert(
+test/SentinelAccount.t.sol:67:    function testBlockedSelectorIsRejected() public {
+test/SentinelAccount.t.sol:74:        vm.expectRevert(
+test/SentinelAccount.t.sol:87:    function testBatchRejectsBeforeAnyCallExecutes() public {
+test/SentinelAccount.t.sol:112:        vm.expectRevert(
+test/SentinelAccount.t.sol:120:        account.executeBatch(calls);
